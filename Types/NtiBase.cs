@@ -10,11 +10,12 @@ namespace Nti.XlsxReader.Types
         public NtiBase()
         {
             Signals = new ObservableCollection<SignalEntity>();
+            Ip = new ObservableCollection<IpEntity>();
         }
 
         private ObservableCollection<SignalEntity> _signals;
         /// <summary>
-        /// Раскладка
+        /// Main signals worksheet data
         /// </summary>
         public ObservableCollection<SignalEntity> Signals
         {
@@ -22,6 +23,20 @@ namespace Nti.XlsxReader.Types
             set
             {
                 _signals = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<IpEntity> _ip;
+        /// <summary>
+        /// IP worksheet data
+        /// </summary>
+        public ObservableCollection<IpEntity> Ip
+        {
+            get => _ip;
+            set
+            {
+                _ip = value;
                 OnPropertyChanged();
             }
         }

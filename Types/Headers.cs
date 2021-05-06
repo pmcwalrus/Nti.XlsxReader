@@ -33,6 +33,7 @@
         public static string IpControlHeader { get; set; } = "Управление при";
         public static string IpRegistartorHeader { get; set; } = "registrator";
         public static string IpRegistartorTimeoutHeader { get; set; } = "registrator_timeout";
+
         #endregion
     }
 }

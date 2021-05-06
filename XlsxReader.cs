@@ -93,8 +93,11 @@ namespace Nti.XlsxReader
             var result = new NtiBase();
             var wb = new XLWorkbook(fileName);
             result.Signals = new ObservableCollection<SignalEntity>(ParseSignals(wb));
+            result.Ip = new ObservableCollection<IpEntity>(ParseIp(wb));
             return result;
         }
+
+        #region Main Signals Base Parse
 
         private List<SignalEntity> ParseSignals(XLWorkbook wb)
         {
@@ -102,47 +105,80 @@ namespace Nti.XlsxReader
             var ws = wb.Worksheet(SignalListName);
             var headerRow = ws.FirstRowUsed();
             var lastRow = ws.LastRowUsed();
-            var lastColumn = ws.LastColumnUsed();
 
-            var signalColumns = ParseSignalListHeader(ws); // Parse Header
+            var signalColumns = ParseHeader(ws, ValueColumns.GetSignalColumns()); // Parse Header
 
             for (var i = headerRow.RowBelow().RowNumber(); i <= lastRow.RowNumber(); ++i)
             {
-                var description = GetSignalParam(ws, signalColumns, i, Headers.DescriptionHeader);
+                var description = GetParamValue(ws, signalColumns, i, Headers.DescriptionHeader);
                 if (string.IsNullOrWhiteSpace(description))
                     continue;
                 var entity = new SignalEntity { Description = description };
-                entity.Index = GetSignalParam(ws, signalColumns, i, Headers.IndexHeader);
-                entity.DelayTimeString = GetSignalParam(ws, signalColumns, i, Headers.DelayTimeHeader);
-                entity.Inversion = !string.IsNullOrWhiteSpace(GetSignalParam(ws, signalColumns, i, Headers.InversionHeader));
-                entity.Psts = GetSignalParam(ws, signalColumns, i, Headers.PstsHeader);
-                entity.SetpoinsValueString = GetSignalParam(ws, signalColumns, i, Headers.SetpointValuesHeader);
-                entity.SetpointTypesString = GetSignalParam(ws, signalColumns, i, Headers.SetpointsTypeHeader);
-                entity.Shmem = GetSignalParam(ws, signalColumns, i, Headers.ShmemHeader);
-                entity.SignalId = GetSignalParam(ws, signalColumns, i, Headers.SignalIdHeader);
-                entity.SystemId = GetSignalParam(ws, signalColumns, i, Headers.SystemIdHeader);
-                entity.Units = GetSignalParam(ws, signalColumns, i, Headers.UnitsHeader);
-                entity.Ups = GetSignalParam(ws, signalColumns, i, Headers.UpsHeader);
-                entity.TypeString = GetSignalParam(ws, signalColumns, i, Headers.SignalTypeHeader);
+                entity.Index = GetParamValue(ws, signalColumns, i, Headers.IndexHeader);
+                entity.DelayTimeString = GetParamValue(ws, signalColumns, i, Headers.DelayTimeHeader);
+                entity.Inversion = !string.IsNullOrWhiteSpace(GetParamValue(ws, signalColumns, i, Headers.InversionHeader));
+                entity.Psts = GetParamValue(ws, signalColumns, i, Headers.PstsHeader);
+                entity.SetpoinsValueString = GetParamValue(ws, signalColumns, i, Headers.SetpointValuesHeader);
+                entity.SetpointTypesString = GetParamValue(ws, signalColumns, i, Headers.SetpointsTypeHeader);
+                entity.Shmem = GetParamValue(ws, signalColumns, i, Headers.ShmemHeader);
+                entity.SignalId = GetParamValue(ws, signalColumns, i, Headers.SignalIdHeader);
+                entity.SystemId = GetParamValue(ws, signalColumns, i, Headers.SystemIdHeader);
+                entity.Units = GetParamValue(ws, signalColumns, i, Headers.UnitsHeader);
+                entity.Ups = GetParamValue(ws, signalColumns, i, Headers.UpsHeader);
+                entity.TypeString = GetParamValue(ws, signalColumns, i, Headers.SignalTypeHeader);
                 result.Add(entity);
             }
             return result;
         }
-        private static string GetSignalParam(IXLWorksheet ws, List<SignalColumn> signalColumns, int row, string paramHeader)
+
+        #endregion
+
+        #region IP data parse
+
+        private List<IpEntity> ParseIp(XLWorkbook wb)
         {
-            return ws.Cell(row, signalColumns
-                .First(x => x.Header == paramHeader)
-                .Column.ColumnNumber()).GetString();
+            var result = new List<IpEntity>();
+            var ws = wb.Worksheet(IpListName);
+            var headerRow = ws.FirstRowUsed();
+            var lastRow = ws.LastRowUsed();
+            var lastColumn = ws.LastColumnUsed();
+
+            var ipColumns = ParseHeader(ws, ValueColumns.GetIpColumns()); // Parse Header
+
+            for (var i = headerRow.RowBelow().RowNumber(); i <= lastRow.RowNumber(); ++i)
+            {
+                var deviceName = GetParamValue(ws, ipColumns, i, Headers.IpDeviceNameHeader);
+                if (string.IsNullOrWhiteSpace(deviceName))
+                    continue;
+                var entity = new IpEntity
+                {
+                    DeviceName = deviceName,
+                    Device = GetParamValue(ws, ipColumns, i, Headers.IpDeviceHeader),
+                    Control = GetParamValue(ws, ipColumns, i, Headers.IpControlHeader),
+                    IFace1 = GetParamValue(ws, ipColumns, i, Headers.IpIFace1Header),
+                    IFace2 = GetParamValue(ws, ipColumns, i, Headers.IpIFace2Header),
+                    Network1 = GetParamValue(ws, ipColumns, i, Headers.IpNetwork1Header),
+                    Network2 = GetParamValue(ws, ipColumns, i, Headers.IpNetwork2Header),
+                    Priority = GetParamValue(ws, ipColumns, i, Headers.IpPriorityHeader),
+                    RegistartorTimeout = GetParamValue(ws, ipColumns, i, Headers.IpRegistartorTimeoutHeader),
+                    Registrator = GetParamValue(ws, ipColumns, i, Headers.IpRegistartorHeader),
+                    VideoGroup = GetParamValue(ws, ipColumns, i, Headers.IpVideoGroupHeader)
+                };
+                result.Add(entity);
+            }
+            return result;
         }
 
-        private List<SignalColumn> ParseSignalListHeader(IXLWorksheet ws)
+
+        #endregion
+
+        private List<ValueColumn> ParseHeader(IXLWorksheet ws, List<ValueColumn> valueColumns)
         {
             var lastColumn = ws.LastColumnUsed();
             var headerRow = ws.FirstRowUsed();
-            var signalColumns = SignalColumns.GetSignalColumns();
             for (var i = 1; i <= lastColumn.ColumnNumber(); ++i) // Parse header
             {
-                foreach (var col in signalColumns)
+                foreach (var col in valueColumns)
                 {
                     var cellValue = ws.Cell(headerRow.RowNumber(), i)
                         .GetString()
@@ -153,14 +189,21 @@ namespace Nti.XlsxReader
                         .Replace("\r", string.Empty)
                         .Replace("\n", string.Empty)
                         .Replace(" ", string.Empty);
-                    if (cellValue.Contains(header, StringComparison.OrdinalIgnoreCase))
+                    if (cellValue.Equals(header, StringComparison.OrdinalIgnoreCase))
                         col.Column = ws.Column(i);
                 }
             }
-            var notExisted = signalColumns.FirstOrDefault(x => x.Column == null);
+            var notExisted = valueColumns.FirstOrDefault(x => x.Column == null);
             if (notExisted != null)
                 throw new Exception($"Can't find column with '{notExisted.Header}' header");
-            return signalColumns;
+            return valueColumns;
+        }
+
+        private static string GetParamValue(IXLWorksheet ws, List<ValueColumn> paramColumns, int row, string paramHeader)
+        {
+            return ws.Cell(row, paramColumns
+                .First(x => x.Header == paramHeader)
+                .Column.ColumnNumber()).GetString();
         }
 
         #region PropertyChanged Impllementation
