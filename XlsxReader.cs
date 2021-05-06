@@ -108,22 +108,22 @@ namespace Nti.XlsxReader
 
             for (var i = headerRow.RowBelow().RowNumber(); i <= lastRow.RowNumber(); ++i)
             {
-                var description = GetSignalParam(ws, signalColumns, i, SignalEntity.DescriptionHeader);
+                var description = GetSignalParam(ws, signalColumns, i, Headers.DescriptionHeader);
                 if (string.IsNullOrWhiteSpace(description))
                     continue;
                 var entity = new SignalEntity { Description = description };
-                entity.Index = GetSignalParam(ws, signalColumns, i, SignalEntity.IndexHeader);
-                entity.DelayTimeString = GetSignalParam(ws, signalColumns, i, SignalEntity.DelayTimeHeader);
-                entity.Inversion = !string.IsNullOrWhiteSpace(GetSignalParam(ws, signalColumns, i, SignalEntity.InversionHeader));
-                entity.Psts = GetSignalParam(ws, signalColumns, i, SignalEntity.PstsHeader);
-                entity.SetpoinsValueString = GetSignalParam(ws, signalColumns, i, SignalEntity.SetpointValuesHeader);
-                entity.SetpointTypesString = GetSignalParam(ws, signalColumns, i, SignalEntity.SetpointsTypeHeader);
-                entity.Shmem = GetSignalParam(ws, signalColumns, i, SignalEntity.ShmemHeader);
-                entity.SignalId = GetSignalParam(ws, signalColumns, i, SignalEntity.SignalIdHeader);
-                entity.SystemId = GetSignalParam(ws, signalColumns, i, SignalEntity.SystemIdHeader);
-                entity.Units = GetSignalParam(ws, signalColumns, i, SignalEntity.UnitsHeader);
-                entity.Ups = GetSignalParam(ws, signalColumns, i, SignalEntity.UpsHeader);
-                entity.TypeString = GetSignalParam(ws, signalColumns, i, SignalEntity.SignalTypeHeader);
+                entity.Index = GetSignalParam(ws, signalColumns, i, Headers.IndexHeader);
+                entity.DelayTimeString = GetSignalParam(ws, signalColumns, i, Headers.DelayTimeHeader);
+                entity.Inversion = !string.IsNullOrWhiteSpace(GetSignalParam(ws, signalColumns, i, Headers.InversionHeader));
+                entity.Psts = GetSignalParam(ws, signalColumns, i, Headers.PstsHeader);
+                entity.SetpoinsValueString = GetSignalParam(ws, signalColumns, i, Headers.SetpointValuesHeader);
+                entity.SetpointTypesString = GetSignalParam(ws, signalColumns, i, Headers.SetpointsTypeHeader);
+                entity.Shmem = GetSignalParam(ws, signalColumns, i, Headers.ShmemHeader);
+                entity.SignalId = GetSignalParam(ws, signalColumns, i, Headers.SignalIdHeader);
+                entity.SystemId = GetSignalParam(ws, signalColumns, i, Headers.SystemIdHeader);
+                entity.Units = GetSignalParam(ws, signalColumns, i, Headers.UnitsHeader);
+                entity.Ups = GetSignalParam(ws, signalColumns, i, Headers.UpsHeader);
+                entity.TypeString = GetSignalParam(ws, signalColumns, i, Headers.SignalTypeHeader);
                 result.Add(entity);
             }
             return result;

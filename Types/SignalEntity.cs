@@ -6,8 +6,7 @@ using System.Runtime.CompilerServices;
 namespace Nti.XlsxReader.Types
 {
     public class SignalEntity : INotifyPropertyChanged
-    {
-        public const string DescriptionHeader = "Наименование параметра";
+    {        
         private string _description;
         public string Description
         {
@@ -18,8 +17,7 @@ namespace Nti.XlsxReader.Types
                 OnPropertyChanged();
             }
         }
-
-        public const string IndexHeader = "Индекс параметра";
+        
         private string _index;
         public string Index
         {
@@ -30,8 +28,7 @@ namespace Nti.XlsxReader.Types
                 OnPropertyChanged();
             }
         }
-
-        public const string UnitsHeader = "Единицы измерения";
+        
         private string _units;
         public string Units
         {
@@ -42,8 +39,7 @@ namespace Nti.XlsxReader.Types
                 OnPropertyChanged();
             }
         }
-
-        public const string SetpointsTypeHeader= "Тип уставки";
+                
         private string _setpointTypesString;
         public string SetpointTypesString
         {
@@ -82,6 +78,7 @@ namespace Nti.XlsxReader.Types
                 _setpointTypesString = value;
             }
         }
+
         private List<SetpointTypes> _setpointTypes;
         public List<SetpointTypes> SetpointTypes
         {
@@ -92,8 +89,7 @@ namespace Nti.XlsxReader.Types
                 OnPropertyChanged();
             }
         }
-
-        public const string SetpointValuesHeader = "Значение";
+        
         private string _setpointsValueString;
         public string SetpoinsValueString
         {
@@ -113,6 +109,7 @@ namespace Nti.XlsxReader.Types
                 OnPropertyChanged();
             }
         }
+
         private List<string> _setpointValues;
         public List<string> SetpointValues
         {
@@ -123,8 +120,7 @@ namespace Nti.XlsxReader.Types
                 OnPropertyChanged();
             }
         }
-
-        public const string DelayTimeHeader = "Время задержки,с";
+        
         private string _delayTimeString;
         public string DelayTimeString
         {
@@ -135,8 +131,7 @@ namespace Nti.XlsxReader.Types
                 OnPropertyChanged();
             }
         }
-
-        public const string InversionHeader = "Инверсия";
+        
         private bool _inversion;
         public bool Inversion
         {
@@ -147,8 +142,7 @@ namespace Nti.XlsxReader.Types
                 OnPropertyChanged();
             }
         }
-
-        public const string SystemIdHeader = "System ID";
+        
         private string _systemId;
         public string SystemId
         {
@@ -159,8 +153,7 @@ namespace Nti.XlsxReader.Types
                 OnPropertyChanged();
             }
         }
-
-        public const string SignalIdHeader = "Signal ID (new)";
+        
         private string _signalId;
         public string SignalId
         {
@@ -171,8 +164,7 @@ namespace Nti.XlsxReader.Types
                 OnPropertyChanged();
             }
         }
-
-        public const string SignalTypeHeader = "Type";
+        
         private string _typeString;
         public string TypeString
         {
@@ -204,6 +196,7 @@ namespace Nti.XlsxReader.Types
                 OnPropertyChanged();
             }
         }
+
         private SignalTypes _type = SignalTypes.Unknownn;
         public SignalTypes Type
         {
@@ -214,8 +207,7 @@ namespace Nti.XlsxReader.Types
                 OnPropertyChanged();
             }
         }
-
-        public const string PstsHeader = "ПСТС";
+        
         private string _psts;
         public string Psts
         {
@@ -226,8 +218,7 @@ namespace Nti.XlsxReader.Types
                 OnPropertyChanged();
             }
         }
-
-        public const string ShmemHeader = "shmem";
+        
         private string _shmem;
         public string Shmem
         {
@@ -238,8 +229,7 @@ namespace Nti.XlsxReader.Types
                 OnPropertyChanged();
             }
         }
-
-        public const string UpsHeader = "УПС";
+        
         private string _ups;
         public string Ups
         {

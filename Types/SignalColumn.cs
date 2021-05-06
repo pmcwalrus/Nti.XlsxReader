@@ -9,19 +9,19 @@ namespace Nti.XlsxReader.Types
     {
         public static List<SignalColumn> GetSignalColumns() => new List<SignalColumn>
             {
-                new SignalColumn(SignalEntity.DescriptionHeader),
-                new SignalColumn(SignalEntity.IndexHeader),
-                new SignalColumn(SignalEntity.UnitsHeader),
-                new SignalColumn(SignalEntity.SetpointsTypeHeader),
-                new SignalColumn(SignalEntity.SetpointValuesHeader),
-                new SignalColumn(SignalEntity.DelayTimeHeader),
-                new SignalColumn(SignalEntity.InversionHeader),
-                new SignalColumn(SignalEntity.SystemIdHeader),
-                new SignalColumn(SignalEntity.SignalIdHeader),
-                new SignalColumn(SignalEntity.SignalTypeHeader),
-                new SignalColumn(SignalEntity.PstsHeader),
-                new SignalColumn(SignalEntity.ShmemHeader),
-                new SignalColumn(SignalEntity.UpsHeader),
+                new SignalColumn(Headers.DescriptionHeader),
+                new SignalColumn(Headers.IndexHeader),
+                new SignalColumn(Headers.UnitsHeader),
+                new SignalColumn(Headers.SetpointsTypeHeader),
+                new SignalColumn(Headers.SetpointValuesHeader),
+                new SignalColumn(Headers.DelayTimeHeader),
+                new SignalColumn(Headers.InversionHeader),
+                new SignalColumn(Headers.SystemIdHeader),
+                new SignalColumn(Headers.SignalIdHeader),
+                new SignalColumn(Headers.SignalTypeHeader),
+                new SignalColumn(Headers.PstsHeader),
+                new SignalColumn(Headers.ShmemHeader),
+                new SignalColumn(Headers.UpsHeader),
             };
     }
 
