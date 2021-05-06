@@ -44,5 +44,11 @@
         public static string UpsWindowHeader { get; set; } = "Окно СК";
 
         #endregion
+
+        #region Layout Header
+
+        public static string LayoutStartSeparator { get; set; } = "Start_address";
+
+        #endregion
     }
 }

@@ -13,6 +13,7 @@ namespace Nti.XlsxReader.Types
             Signals = new ObservableCollection<SignalEntity>();
             Ip = new ObservableCollection<IpEntity>();
             Ups = new ObservableCollection<UpsEntity>();
+            Layout = new ObservableCollection<SignalOnDevice>();
         }
 
         private ObservableCollection<SignalEntity> _signals;
@@ -50,6 +51,17 @@ namespace Nti.XlsxReader.Types
             set
             {
                 _ups = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<SignalOnDevice> _layout;
+        public ObservableCollection<SignalOnDevice> Layout
+        {
+            get => _layout;
+            set
+            {
+                _layout = value;
                 OnPropertyChanged();
             }
         }

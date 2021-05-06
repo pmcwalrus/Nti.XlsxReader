@@ -25,13 +25,13 @@ namespace Nti.XlsxReader
             }
         }
 
-        private string _signalOnDeviceListName = "Раскладка";
-        public string SignalOnDeviceListName
+        private string _layoutListName = "Раскладка";
+        public string LayoutListName
         {
-            get => _signalOnDeviceListName;
+            get => _layoutListName;
             set
             {
-                _signalOnDeviceListName = value;
+                _layoutListName = value;
                 OnPropertyChanged();
             }
         }
@@ -96,6 +96,7 @@ namespace Nti.XlsxReader
             result.Signals = new ObservableCollection<SignalEntity>(ParseSignals(wb));
             result.Ip = new ObservableCollection<IpEntity>(ParseIp(wb));
             result.Ups = new ObservableCollection<UpsEntity>(ParseUps(wb));
+            result.Layout = new ObservableCollection<SignalOnDevice>(ParseLayout(wb));
             return result;
         }
 
@@ -196,6 +197,56 @@ namespace Nti.XlsxReader
                     Window = GetParamValue(ws, upsColumns, i, Headers.UpsWindowHeader),
                 };
                 result.Add(entity);
+            }
+            return result;
+        }
+
+        #endregion
+
+        #region Parse Layout
+
+        private List<SignalOnDevice> ParseLayout(XLWorkbook wb)
+        {
+            var result = new List<SignalOnDevice>();
+            var ws = wb.Worksheet(LayoutListName);
+            var mainColumn = ws.FirstColumnUsed();
+
+            var separatorRows = GetLayoutSepratorRows(ws, mainColumn);
+            for (var i = 0; i < separatorRows.Count; i++)
+            {
+                IXLRow lastRow = i < separatorRows.Count - 1
+                    ? ws.LastRowUsed()
+                    : separatorRows[i + 1].RowAbove(2);
+                var signals = ParseLayoutDevice(ws, mainColumn, separatorRows[i], lastRow);
+                result.AddRange(signals);
+            }
+            return result;
+        }
+
+        private List<SignalOnDevice> ParseLayoutDevice(IXLWorksheet ws, 
+            IXLColumn firstColumn, IXLRow separatorRow, IXLRow lastRow)
+        {
+            var deviceIndexRow = separatorRow.RowAbove();
+            var deviceIndex = ws.Cell(deviceIndexRow.RowNumber(), firstColumn.ColumnNumber()).ToString();
+            for (var columnOffset = 1; columnOffset <= 8; columnOffset++)
+            {
+               for (var row = separatorRow.RowBelow().RowNumber(); row <= lastRow.RowNumber(); ++row)
+                {
+                    throw new NotImplementedException();
+                }
+            }
+            throw new NotImplementedException();
+        }
+
+        private List<IXLRow> GetLayoutSepratorRows(IXLWorksheet ws, IXLColumn column)
+        {
+            var result = new List<IXLRow>();
+            var lastRow = ws.LastRowUsed();
+            for (var i = 1; i <= lastRow.RowNumber(); i++)
+            {
+                var cellValue = ws.Cell(i, column.ColumnNumber()).GetString();
+                if (cellValue == Headers.LayoutStartSeparator)
+                    result.Add(ws.Row(i));
             }
             return result;
         }
