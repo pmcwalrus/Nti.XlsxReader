@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Nti.XlsxReader.Types
+namespace Nti.XlsxReader.Entities
 {
     public class IpEntity : INotifyPropertyChanged
     {
@@ -105,7 +105,7 @@ namespace Nti.XlsxReader.Types
         }
 
         private string _registrator;
-        public string Registrator 
+        public string Registrator
         {
             get => _registrator;
             set

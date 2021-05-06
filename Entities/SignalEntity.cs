@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Nti.XlsxReader.Types;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Nti.XlsxReader.Types
+namespace Nti.XlsxReader.Entities
 {
     public class SignalEntity : INotifyPropertyChanged
     {        

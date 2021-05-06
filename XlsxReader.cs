@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using Nti.XlsxReader.Entities;
 using Nti.XlsxReader.Types;
 using System;
 using System.Collections.Generic;
@@ -94,6 +95,7 @@ namespace Nti.XlsxReader
             var wb = new XLWorkbook(fileName);
             result.Signals = new ObservableCollection<SignalEntity>(ParseSignals(wb));
             result.Ip = new ObservableCollection<IpEntity>(ParseIp(wb));
+            result.Ups = new ObservableCollection<UpsEntity>(ParseUps(wb));
             return result;
         }
 
@@ -141,7 +143,6 @@ namespace Nti.XlsxReader
             var ws = wb.Worksheet(IpListName);
             var headerRow = ws.FirstRowUsed();
             var lastRow = ws.LastRowUsed();
-            var lastColumn = ws.LastColumnUsed();
 
             var ipColumns = ParseHeader(ws, ValueColumns.GetIpColumns()); // Parse Header
 
@@ -169,6 +170,35 @@ namespace Nti.XlsxReader
             return result;
         }
 
+        #endregion
+
+        #region Parse UPS
+
+        public List<UpsEntity> ParseUps(XLWorkbook wb)
+        {
+            var result = new List<UpsEntity>();
+            var ws = wb.Worksheet(UpsListName);
+            var headerRow = ws.FirstRowUsed();
+            var lastRow = ws.LastRowUsed();
+
+            var upsColumns = ParseHeader(ws, ValueColumns.GetUpsColumns()); // Parse Header
+
+            for (var i = headerRow.RowBelow().RowNumber(); i <= lastRow.RowNumber(); ++i)
+            {
+                var id = GetParamValue(ws, upsColumns, i, Headers.UpsIdHeader);
+                if (string.IsNullOrWhiteSpace(id))
+                    continue;
+                var entity = new UpsEntity
+                {
+                    Id = id,
+                    AlarmGroup = GetParamValue(ws, upsColumns, i, Headers.UpsAlarmGroupHeader),
+                    Group = GetParamValue(ws, upsColumns, i, Headers.UpsGroupHeader),
+                    Window = GetParamValue(ws, upsColumns, i, Headers.UpsWindowHeader),
+                };
+                result.Add(entity);
+            }
+            return result;
+        }
 
         #endregion
 

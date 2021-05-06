@@ -38,6 +38,14 @@ namespace Nti.XlsxReader.Types
             new ValueColumn(Headers.IpRegistartorHeader),
             new ValueColumn(Headers.IpRegistartorTimeoutHeader),
         };
+
+        public static List<ValueColumn> GetUpsColumns() => new List<ValueColumn>
+        {
+            new ValueColumn(Headers.UpsIdHeader),
+            new ValueColumn(Headers.UpsGroupHeader),
+            new ValueColumn(Headers.UpsAlarmGroupHeader),
+            new ValueColumn(Headers.UpsWindowHeader)
+        };
     }
 
     public class ValueColumn : INotifyPropertyChanged

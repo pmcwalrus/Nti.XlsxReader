@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using Nti.XlsxReader.Entities;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -11,6 +12,7 @@ namespace Nti.XlsxReader.Types
         {
             Signals = new ObservableCollection<SignalEntity>();
             Ip = new ObservableCollection<IpEntity>();
+            Ups = new ObservableCollection<UpsEntity>();
         }
 
         private ObservableCollection<SignalEntity> _signals;
@@ -37,6 +39,17 @@ namespace Nti.XlsxReader.Types
             set
             {
                 _ip = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<UpsEntity> _ups;
+        public ObservableCollection<UpsEntity> Ups
+        {
+            get => _ups;
+            set
+            {
+                _ups = value;
                 OnPropertyChanged();
             }
         }
