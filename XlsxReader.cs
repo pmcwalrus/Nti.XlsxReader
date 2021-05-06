@@ -59,7 +59,17 @@ namespace Nti.XlsxReader
 
         #endregion
 
-        public NtiBase DataBase { get; private set; }
+        private NtiBase _dataBase;
+        public NtiBase DataBase 
+        {
+            get => _dataBase;
+            private set
+            {
+                if (_dataBase == value) return;
+                _dataBase = value;
+                OnPropertyChanged();
+            }
+        }
 
         public void OpenFile(string fileName)
         {
