@@ -108,14 +108,31 @@ namespace Nti.XlsxReader
 
             for (var i = headerRow.RowBelow().RowNumber(); i <= lastRow.RowNumber(); ++i)
             {
-                var cellContent = ws.Cell(i, signalColumns.First(x =>
-                x.Header == SignalEntity.DescriptionHeader)
-                    .Column.ColumnNumber()).GetString();
-                if (string.IsNullOrWhiteSpace(cellContent))
+                var description = GetSignalParam(ws, signalColumns, i, SignalEntity.DescriptionHeader);
+                if (string.IsNullOrWhiteSpace(description))
                     continue;
-                result.Add(new SignalEntity { Description = cellContent });
+                var entity = new SignalEntity { Description = description };
+                entity.Index = GetSignalParam(ws, signalColumns, i, SignalEntity.IndexHeader);
+                entity.DelayTimeString = GetSignalParam(ws, signalColumns, i, SignalEntity.DelayTimeHeader);
+                entity.Inversion = !string.IsNullOrWhiteSpace(GetSignalParam(ws, signalColumns, i, SignalEntity.InversionHeader));
+                entity.Psts = GetSignalParam(ws, signalColumns, i, SignalEntity.PstsHeader);
+                entity.SetpoinsValueString = GetSignalParam(ws, signalColumns, i, SignalEntity.SetpointValuesHeader);
+                entity.SetpointTypesString = GetSignalParam(ws, signalColumns, i, SignalEntity.SetpointsTypeHeader);
+                entity.Shmem = GetSignalParam(ws, signalColumns, i, SignalEntity.ShmemHeader);
+                entity.SignalId = GetSignalParam(ws, signalColumns, i, SignalEntity.SignalIdHeader);
+                entity.SystemId = GetSignalParam(ws, signalColumns, i, SignalEntity.SystemIdHeader);
+                entity.Units = GetSignalParam(ws, signalColumns, i, SignalEntity.UnitsHeader);
+                entity.Ups = GetSignalParam(ws, signalColumns, i, SignalEntity.UpsHeader);
+                entity.TypeString = GetSignalParam(ws, signalColumns, i, SignalEntity.SignalTypeHeader);
+                result.Add(entity);
             }
             return result;
+        }
+        private static string GetSignalParam(IXLWorksheet ws, List<SignalColumn> signalColumns, int row, string paramHeader)
+        {
+            return ws.Cell(row, signalColumns
+                .First(x => x.Header == paramHeader)
+                .Column.ColumnNumber()).GetString();
         }
 
         private List<SignalColumn> ParseSignalListHeader(IXLWorksheet ws)

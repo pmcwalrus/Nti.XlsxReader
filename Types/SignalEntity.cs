@@ -160,7 +160,7 @@ namespace Nti.XlsxReader.Types
             }
         }
 
-        public const string SignalIdHeader = "Signal ID";
+        public const string SignalIdHeader = "Signal ID (new)";
         private string _signalId;
         public string SignalId
         {
@@ -173,6 +173,37 @@ namespace Nti.XlsxReader.Types
         }
 
         public const string SignalTypeHeader = "Type";
+        private string _typeString;
+        public string TypeString
+        {
+            get => _typeString;
+            set
+            {
+                _typeString = value;
+                switch(value.ToLower().Replace(" ", string.Empty))
+                {
+                    case "bool":
+                        Type = SignalTypes.Bool;
+                        break;
+                    case "int":
+                        Type = SignalTypes.Int;
+                        break;
+                    case "float":
+                        Type = SignalTypes.Float;
+                        break;
+                    case "alarm":
+                        Type = SignalTypes.Alarm;
+                        break;
+                    case "critical_alarm":
+                        Type = SignalTypes.CritcalAlarm;
+                        break;
+                    default:
+                        Type = SignalTypes.Unknownn;
+                        break;
+                }
+                OnPropertyChanged();
+            }
+        }
         private SignalTypes _type = SignalTypes.Unknownn;
         public SignalTypes Type
         {
