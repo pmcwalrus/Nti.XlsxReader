@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace Nti.XlsxReader
 {
@@ -58,6 +59,28 @@ namespace Nti.XlsxReader
             }
         }
 
+        private string _xmlTopListName = "xml_top";
+        public string XmlTopListName
+        {
+            get => _xmlTopListName;
+            set
+            {
+                _xmlTopListName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _xmlBotListName = "xml_bot";
+        public string XmlBotListName
+        {
+            get => _xmlBotListName;
+            set
+            {
+                _xmlBotListName = value;
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         private NtiBase _dataBase;
@@ -97,6 +120,8 @@ namespace Nti.XlsxReader
             result.Ip = new ObservableCollection<IpEntity>(ParseIp(wb));
             result.Ups = new ObservableCollection<UpsEntity>(ParseUps(wb));
             result.Layout = new ObservableCollection<SignalOnDevice>(ParseLayout(wb));
+            result.XmlTop = GetXmlDirectParts(wb, XmlTopListName);
+            result.XmlBot = GetXmlDirectParts(wb, XmlBotListName);
             return result;
         }
 
@@ -264,6 +289,31 @@ namespace Nti.XlsxReader
                     result.Add(ws.Row(i));
             }
             return result;
+        }
+
+        #endregion
+
+        #region Parse Top and Bottom
+
+        private string GetXmlDirectParts(XLWorkbook wb, string sheetName)
+        {
+            var ws = wb.Worksheet(sheetName);
+            var firstRow = ws.FirstRowUsed();
+            var lastRow = ws.LastRowUsed();
+            var firstColumn = ws.FirstColumnUsed();
+            var lastColumn = ws.LastColumnUsed();
+            var result = new StringBuilder();
+            for (var row = firstRow.RowNumber(); row <= lastRow.RowNumber(); row++)
+            {
+                for (var col = firstColumn.ColumnNumber(); col <= lastColumn.ColumnNumber(); col++)
+                {
+                    var cellValue = ws.Cell(row, col).GetString();
+                    result.Append(cellValue);
+                    result.Append("\t");
+                }
+                result.Append("\r\n");
+            }
+            return result.ToString();
         }
 
         #endregion

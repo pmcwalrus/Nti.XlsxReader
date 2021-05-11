@@ -66,6 +66,28 @@ namespace Nti.XlsxReader.Types
             }
         }
 
+        private string _xmlTop;
+        public string XmlTop
+        {
+            get => _xmlTop;
+            set
+            {
+                _xmlTop = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _xmlBot;
+        public string XmlBot
+        {
+            get => _xmlBot;
+            set
+            {
+                _xmlBot = value;
+                OnPropertyChanged();
+            }
+        }
+
         #region PropertyChanged Impllementation
 
         public event PropertyChangedEventHandler PropertyChanged;
