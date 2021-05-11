@@ -5,6 +5,16 @@ namespace Nti.XlsxReader.Entities
 {
     public class SignalOnDevice : INotifyPropertyChanged
     {
+        private string _signalName;
+        public string SignalName 
+        {
+            get => _signalName;
+            set
+            {
+                _signalName = value;
+                OnPropertyChanged();
+            }
+        }
 
         private string _deviceIndex;
         public string DeviceIndex

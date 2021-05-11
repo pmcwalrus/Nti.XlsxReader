@@ -215,8 +215,8 @@ namespace Nti.XlsxReader
             for (var i = 0; i < separatorRows.Count; i++)
             {
                 IXLRow lastRow = i < separatorRows.Count - 1
-                    ? ws.LastRowUsed()
-                    : separatorRows[i + 1].RowAbove(2);
+                    ? separatorRows[i + 1].RowAbove(2)
+                    : ws.LastRowUsed();
                 var signals = ParseLayoutDevice(ws, mainColumn, separatorRows[i], lastRow);
                 result.AddRange(signals);
             }
@@ -226,16 +226,31 @@ namespace Nti.XlsxReader
         private List<SignalOnDevice> ParseLayoutDevice(IXLWorksheet ws, 
             IXLColumn firstColumn, IXLRow separatorRow, IXLRow lastRow)
         {
+            var result = new List<SignalOnDevice>();
             var deviceIndexRow = separatorRow.RowAbove();
-            var deviceIndex = ws.Cell(deviceIndexRow.RowNumber(), firstColumn.ColumnNumber()).ToString();
+            var deviceIndex = ws.Cell(deviceIndexRow.RowNumber(), firstColumn.ColumnNumber()).GetString();
             for (var columnOffset = 1; columnOffset <= 8; columnOffset++)
             {
-               for (var row = separatorRow.RowBelow().RowNumber(); row <= lastRow.RowNumber(); ++row)
+                var deviceType = ws.Cell(deviceIndexRow.RowNumber(), firstColumn.ColumnNumber() + columnOffset).GetString();
+                var startAddressStr = ws.Cell(separatorRow.RowNumber(), firstColumn.ColumnNumber() + columnOffset).GetString();
+                var parseRes = int.TryParse(startAddressStr, out var startAddress);
+                for (var row = separatorRow.RowBelow().RowNumber(); row <= lastRow.RowNumber(); ++row)
                 {
-                    throw new NotImplementedException();
+                    var signalName = ws.Cell(row, firstColumn.ColumnNumber() + columnOffset).GetString();
+                    if (string.IsNullOrWhiteSpace(signalName)) continue;
+                    if (!parseRes) 
+                        throw new FormatException($"Invalid start address format: {startAddressStr}");
+                    var signal = new SignalOnDevice
+                    {
+                        SignalName = signalName,
+                        DeviceIndex = deviceIndex,
+                        Type = deviceType,
+                        NumberStr = (startAddress + row - separatorRow.RowBelow().RowNumber()).ToString(),
+                    };
+                    result.Add(signal);
                 }
             }
-            throw new NotImplementedException();
+            return result;
         }
 
         private List<IXLRow> GetLayoutSepratorRows(IXLWorksheet ws, IXLColumn column)
