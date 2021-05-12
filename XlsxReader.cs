@@ -182,11 +182,24 @@ namespace Nti.XlsxReader
             var ws = wb.Worksheet(IpListName);
             var headerRow = ws.FirstRowUsed();
             var lastRow = ws.LastRowUsed();
+            var typeColumn = ws.FirstColumnUsed();
 
             var ipColumns = ParseHeader(ws, ValueColumns.GetIpColumns()); // Parse Header
-
+            var currentType = DeviceType.Unknown;
             for (var i = headerRow.RowBelow().RowNumber(); i <= lastRow.RowNumber(); ++i)
             {
+                var typeValue = ws.Cell(i, typeColumn.ColumnNumber()).GetString();
+                if (typeValue.Contains("!!"))
+                {
+                    var typeStr = typeValue.Replace("!!", string.Empty);
+                    if (typeStr == Headers.IpTypeDeviceString)
+                        currentType = DeviceType.Device;
+                    else if (typeStr == Headers.IpTypeWorkstationString)
+                        currentType = DeviceType.Worstation;
+                    else if (typeStr == Headers.IpTypeExternalSystemString)
+                        currentType = DeviceType.ExternalSystem;
+                    else currentType = DeviceType.Unknown;
+                }
                 var deviceName = GetParamValue(ws, ipColumns, i, Headers.IpDeviceNameHeader);
                 if (string.IsNullOrWhiteSpace(deviceName))
                     continue;
@@ -202,7 +215,8 @@ namespace Nti.XlsxReader
                     Priority = GetParamValue(ws, ipColumns, i, Headers.IpPriorityHeader),
                     RegistartorTimeout = GetParamValue(ws, ipColumns, i, Headers.IpRegistartorTimeoutHeader),
                     Registrator = GetParamValue(ws, ipColumns, i, Headers.IpRegistartorHeader),
-                    VideoGroup = GetParamValue(ws, ipColumns, i, Headers.IpVideoGroupHeader)
+                    VideoGroup = GetParamValue(ws, ipColumns, i, Headers.IpVideoGroupHeader),
+                    DeviceType = currentType,
                 };
                 result.Add(entity);
             }

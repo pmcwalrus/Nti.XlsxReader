@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Nti.XlsxReader.Types;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Nti.XlsxReader.Entities
@@ -122,6 +123,17 @@ namespace Nti.XlsxReader.Entities
             set
             {
                 _registratorTimeout = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private DeviceType _deviceType = DeviceType.Unknown;
+        public DeviceType DeviceType
+        {
+            get => _deviceType;
+            set
+            {
+                _deviceType = value;
                 OnPropertyChanged();
             }
         }

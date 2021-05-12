@@ -34,6 +34,10 @@
         public static string IpRegistartorHeader { get; set; } = "registrator";
         public static string IpRegistartorTimeoutHeader { get; set; } = "registrator_timeout";
 
+        public static string IpTypeWorkstationString { get; set; } = "Рабочие станции";
+        public static string IpTypeDeviceString { get; set; } = "Приборы сопряжения";
+        public static string IpTypeExternalSystemString { get; set; } = "Чужие системы ";
+
         #endregion
 
         #region Ups Headers
