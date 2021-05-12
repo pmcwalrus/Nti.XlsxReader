@@ -82,6 +82,17 @@ namespace Nti.XlsxReader
             }
         }
 
+        private string _addShmemsListName = "add_shmems";
+        public string AddShmemsListName
+        {
+            get => _addShmemsListName;
+            set
+            {
+                _addShmemsListName = value;
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         private bool _baseParsed;
@@ -135,6 +146,7 @@ namespace Nti.XlsxReader
             result.Layout = new ObservableCollection<SignalOnDevice>(ParseLayout(wb));
             result.XmlTop = GetXmlDirectParts(wb, XmlTopListName);
             result.XmlBot = GetXmlDirectParts(wb, XmlBotListName);
+            result.AddShmems = GetXmlDirectParts(wb, AddShmemsListName);
             result.DeviceAdds = new ObservableCollection<DeviceAddition>(GetDeviceAdditions(wb));
             BaseParsed = true;
             return result;

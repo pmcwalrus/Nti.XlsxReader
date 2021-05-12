@@ -100,6 +100,17 @@ namespace Nti.XlsxReader.Types
             }
         }
 
+        private string _addShmems;
+        public string AddShmems
+        {
+            get => _addShmems;
+            set
+            {
+                _addShmems = value;
+                OnPropertyChanged();
+            }
+        }
+
         #region PropertyChanged Impllementation
 
         public event PropertyChangedEventHandler PropertyChanged;
