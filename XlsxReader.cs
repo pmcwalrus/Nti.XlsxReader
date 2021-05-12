@@ -134,6 +134,7 @@ namespace Nti.XlsxReader
             result.Layout = new ObservableCollection<SignalOnDevice>(ParseLayout(wb));
             result.XmlTop = GetXmlDirectParts(wb, XmlTopListName);
             result.XmlBot = GetXmlDirectParts(wb, XmlBotListName);
+            result.DeviceAdds = new ObservableCollection<DeviceAddition>(GetDeviceAdditions(wb));
             BaseParsed = true;
             return result;
         }
@@ -322,7 +323,7 @@ namespace Nti.XlsxReader
 
         #endregion
 
-        #region Parse Top and Bottom
+        #region Parse Injections
 
         private string GetXmlDirectParts(XLWorkbook wb, string sheetName)
         {
@@ -343,6 +344,21 @@ namespace Nti.XlsxReader
                 result.Append("\r\n");
             }
             return result.ToString();
+        }
+
+        private List<DeviceAddition> GetDeviceAdditions(XLWorkbook wb)
+        {
+            var result = new List<DeviceAddition>();
+            var sheets = wb.Worksheets.Where(x => x.Name.StartsWith(Headers.DeviceAdditionSheetPreamble));
+            foreach (var s in sheets)
+            {
+                result.Add(new DeviceAddition
+                {
+                    DeviceName = s.Name.Remove(0, Headers.DeviceAdditionSheetPreamble.Length),
+                    Addition = GetXmlDirectParts(wb, s.Name)
+                });
+            }
+            return result;
         }
 
         #endregion

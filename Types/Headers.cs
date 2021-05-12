@@ -49,6 +49,8 @@
 
         #endregion
 
+        public static string DeviceAdditionSheetPreamble { get; set; } = "dev_";
+
         #region Layout Header
 
         public static string LayoutStartSeparator { get; set; } = "Start_address";
