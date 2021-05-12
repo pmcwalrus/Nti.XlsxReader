@@ -83,6 +83,17 @@ namespace Nti.XlsxReader
 
         #endregion
 
+        private bool _baseParsed;
+        public bool BaseParsed 
+        {
+            get => _baseParsed;
+            private set
+            {
+                _baseParsed = value;
+                OnPropertyChanged();
+            }
+        }
+
         private NtiBase _dataBase;
         public NtiBase DataBase 
         {
@@ -98,7 +109,7 @@ namespace Nti.XlsxReader
         public void OpenFile(string fileName)
         {
             FileName = fileName;
-            DataBase = ExtractFileData(fileName);
+            DataBase = ExtractFileData(fileName);            
         }
 
         private string _fileName;
@@ -114,6 +125,7 @@ namespace Nti.XlsxReader
 
         private NtiBase ExtractFileData(string fileName)
         {
+            BaseParsed = false;
             var result = new NtiBase();
             var wb = new XLWorkbook(fileName);
             result.Signals = new ObservableCollection<SignalEntity>(ParseSignals(wb));
@@ -122,6 +134,7 @@ namespace Nti.XlsxReader
             result.Layout = new ObservableCollection<SignalOnDevice>(ParseLayout(wb));
             result.XmlTop = GetXmlDirectParts(wb, XmlTopListName);
             result.XmlBot = GetXmlDirectParts(wb, XmlBotListName);
+            BaseParsed = true;
             return result;
         }
 
