@@ -7,6 +7,7 @@
         Float,
         Alarm,
         CritcalAlarm,
+        mA4_20,
         Unknownn,
     }
 }
