@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -155,6 +156,11 @@ namespace Nti.XlsxReader
                 var description = GetParamValue(ws, signalColumns, i, Headers.DescriptionHeader);
                 if (string.IsNullOrWhiteSpace(description))
                     continue;
+                var ignoreCellColor = ws.Cell(i, ws.FirstColumnUsed().ColumnNumber()).Style.Fill.BackgroundColor.Color.ToArgb();
+                if (ignoreCellColor == Color.FromArgb(255, 193, 152, 224).ToArgb())
+                {
+                    continue;
+                }
                 var entity = new SignalEntity { Description = description };
                 entity.Index = GetParamValue(ws, signalColumns, i, Headers.IndexHeader);
                 entity.DelayTimeString = GetParamValue(ws, signalColumns, i, Headers.DelayTimeHeader);
