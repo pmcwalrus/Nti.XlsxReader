@@ -186,6 +186,7 @@ namespace Nti.XlsxReader
                 entity.Units = GetParamValue(ws, signalColumns, i, Headers.UnitsHeader);
                 entity.Ups = GetParamValue(ws, signalColumns, i, Headers.UpsHeader);
                 entity.TypeString = GetParamValue(ws, signalColumns, i, Headers.SignalTypeHeader);
+                entity.Is420mA = GetParamValue(ws, signalColumns, i, Headers.SignalTypeTextHeader).Contains("4-20");
                 result.Add(entity);
             }
             return result;

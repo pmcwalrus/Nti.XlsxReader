@@ -175,9 +175,6 @@ namespace Nti.XlsxReader.Entities
                 _typeString = value;
                 switch(value.ToLower().Replace(" ", string.Empty))
                 {
-                    case "4-20ма":
-                        Type = SignalTypes.mA4_20;
-                        break;
                     case "bool":
                         Type = SignalTypes.Bool;
                         break;
@@ -241,6 +238,17 @@ namespace Nti.XlsxReader.Entities
             set
             {
                 _ups = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _is420mA;
+        public bool Is420mA
+        {
+            get => _is420mA;
+            set
+            {
+                _is420mA = value;
                 OnPropertyChanged();
             }
         }

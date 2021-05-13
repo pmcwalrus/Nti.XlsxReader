@@ -22,6 +22,7 @@ namespace Nti.XlsxReader.Types
                 new ValueColumn(Headers.PstsHeader),
                 new ValueColumn(Headers.ShmemHeader),
                 new ValueColumn(Headers.UpsHeader),
+                new ValueColumn(Headers.SignalTypeTextHeader)
             };
 
         public static List<ValueColumn> GetIpColumns() => new List<ValueColumn>

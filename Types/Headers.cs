@@ -17,6 +17,7 @@
         public static string PstsHeader { get; } = "ПСТС";
         public static string ShmemHeader { get; } = "shmem";
         public static string UpsHeader { get; } = "УПС";
+        public static string SignalTypeTextHeader { get; } = "Тип сигнала";
 
         #endregion
 
