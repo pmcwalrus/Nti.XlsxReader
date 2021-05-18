@@ -18,6 +18,7 @@
         public static string ShmemHeader { get; set; } = "shmem";
         public static string UpsHeader { get; set; } = "УПС";
         public static string SignalTypeTextHeader { get; set; } = "Тип сигнала";
+        public static string VkHeader { get; set; } = "ВК";
 
         #endregion
 
@@ -38,6 +39,7 @@
         public static string IpTypeWorkstationString { get; set; } = "Рабочие станции";
         public static string IpTypeDeviceString { get; set; } = "Приборы сопряжения";
         public static string IpTypeExternalSystemString { get; set; } = "Чужие системы ";
+        
 
         #endregion
 
@@ -57,5 +59,13 @@
         public static string LayoutStartSeparator { get; set; } = "Start_address";
 
         #endregion
+
+        #region Vk Headers
+
+        public static string VkNumberHeader { get; set; } = "№";
+        public static string VkDescriptionHeader { get; set; } = "Наименование";        
+        public static string VkNameHeader { get; set; } = "name";
+
+        #endregion 
     }
 }

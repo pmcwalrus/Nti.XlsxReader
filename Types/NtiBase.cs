@@ -78,6 +78,17 @@ namespace Nti.XlsxReader.Types
             }
         }
 
+        private ObservableCollection<VkEntity> _vk;
+        public ObservableCollection<VkEntity> Vk
+        {
+            get => _vk;
+            set
+            {
+                _vk = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _xmlTop;
         public string XmlTop
         {

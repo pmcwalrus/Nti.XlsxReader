@@ -82,6 +82,17 @@ namespace Nti.XlsxReader
             }
         }
 
+        private string _vkListName = "ВК";
+        public string VkListName
+        {
+            get => _vkListName;
+            set
+            {
+                _vkListName = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _addShmemsListName = "add_shmems";
         public string AddShmemsListName
         {
@@ -144,6 +155,7 @@ namespace Nti.XlsxReader
             result.Ip = new ObservableCollection<IpEntity>(ParseIp(wb));
             result.Ups = new ObservableCollection<UpsEntity>(ParseUps(wb));
             result.Layout = new ObservableCollection<SignalOnDevice>(ParseLayout(wb));
+            result.Vk = new ObservableCollection<VkEntity>(ParseVk(wb));
             result.XmlTop = GetXmlDirectParts(wb, XmlTopListName);
             result.XmlBot = GetXmlDirectParts(wb, XmlBotListName);
             result.AddShmems = GetXmlDirectParts(wb, AddShmemsListName);
@@ -186,6 +198,7 @@ namespace Nti.XlsxReader
                 entity.Units = GetParamValue(ws, signalColumns, i, Headers.UnitsHeader);
                 entity.Ups = GetParamValue(ws, signalColumns, i, Headers.UpsHeader);
                 entity.TypeString = GetParamValue(ws, signalColumns, i, Headers.SignalTypeHeader);
+                entity.Vk = GetParamValue(ws, signalColumns, i, Headers.VkHeader);
                 entity.Is420mA = GetParamValue(ws, signalColumns, i, Headers.SignalTypeTextHeader).Contains("4-20");
                 result.Add(entity);
             }
@@ -381,6 +394,34 @@ namespace Nti.XlsxReader
         }
 
         #endregion
+
+        #region Parse Vk
+
+        private List<VkEntity> ParseVk(XLWorkbook wb)
+        {
+            var result = new List<VkEntity>();
+            var ws = wb.Worksheet(VkListName);
+            var headerRow = ws.FirstRowUsed();
+            var lastRow = ws.LastRowUsed();
+            var signalColumns = ParseHeader(ws, ValueColumns.GetVkColumns()); // Parse Header
+            for (var i = headerRow.RowBelow().RowNumber(); i <= lastRow.RowNumber(); ++i)
+            {
+                var number = GetParamValue(ws, signalColumns, i, Headers.VkNumberHeader);
+                if (string.IsNullOrWhiteSpace(number))
+                    continue;
+                var entity = new VkEntity
+                {
+                    Number = number,
+                    Description = GetParamValue(ws, signalColumns, i, Headers.VkDescriptionHeader),
+                    Name = GetParamValue(ws, signalColumns, i, Headers.VkNameHeader)
+                };
+                result.Add(entity);
+            }
+            return result;
+        }
+
+        #endregion
+
 
         private List<ValueColumn> ParseHeader(IXLWorksheet ws, List<ValueColumn> valueColumns)
         {

@@ -253,6 +253,17 @@ namespace Nti.XlsxReader.Entities
             }
         }
 
+        private string _vk;
+        public string Vk
+        {
+            get => _vk;
+            set
+            {
+                _vk = value;
+                OnPropertyChanged();
+            }
+        }
+
         #region PropertyChanged Impllementation
 
         public event PropertyChangedEventHandler PropertyChanged;

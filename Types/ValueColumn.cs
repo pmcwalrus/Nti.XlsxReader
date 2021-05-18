@@ -22,7 +22,8 @@ namespace Nti.XlsxReader.Types
                 new ValueColumn(Headers.PstsHeader),
                 new ValueColumn(Headers.ShmemHeader),
                 new ValueColumn(Headers.UpsHeader),
-                new ValueColumn(Headers.SignalTypeTextHeader)
+                new ValueColumn(Headers.SignalTypeTextHeader),
+                new ValueColumn(Headers.VkHeader),
             };
 
         public static List<ValueColumn> GetIpColumns() => new List<ValueColumn>
@@ -46,6 +47,13 @@ namespace Nti.XlsxReader.Types
             new ValueColumn(Headers.UpsGroupHeader),
             new ValueColumn(Headers.UpsAlarmGroupHeader),
             new ValueColumn(Headers.UpsWindowHeader)
+        };
+
+        public static List<ValueColumn> GetVkColumns() => new List<ValueColumn>
+        {
+            new ValueColumn(Headers.VkNumberHeader),
+            new ValueColumn(Headers.VkDescriptionHeader),
+            new ValueColumn(Headers.VkNameHeader)
         };
     }
 
