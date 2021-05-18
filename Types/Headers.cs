@@ -45,7 +45,7 @@
 
         public static string UpsIdHeader { get; set; } = "id";
         public static string UpsGroupHeader { get; set; } = "Группа УПС";
-        public static string UpsAlarmGroupHeader { get; set; } = "alarm_group";
+        public static string UpsAlarmGroupHeader { get; set; } = "№ Табло";
         public static string UpsWindowHeader { get; set; } = "Окно СК";
 
         #endregion
