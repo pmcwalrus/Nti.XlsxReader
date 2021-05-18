@@ -11,8 +11,8 @@
         public static string SetpointValuesHeader { get; set; } = "Значение";
         public static string DelayTimeHeader { get; set; } = "Время задержки,с";
         public static string InversionHeader { get; set; } = "Инверсия";
-        public static string SystemIdHeader { get; set; } = "System ID";
-        public static string SignalIdHeader { get; set; } = "Signal ID (new)";
+        public static string SystemIdHeader { get; set; } = "Parm system ID";
+        public static string SignalIdHeader { get; set; } = "Parm ID";
         public static string SignalTypeHeader { get; set; } = "Type";
         public static string PstsHeader { get; set; } = "ПСТС";
         public static string ShmemHeader { get; set; } = "shmem";
