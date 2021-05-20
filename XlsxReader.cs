@@ -200,8 +200,16 @@ namespace Nti.XlsxReader
                 entity.TypeString = GetParamValue(ws, signalColumns, i, Headers.SignalTypeHeader);
                 entity.Vk = GetParamValue(ws, signalColumns, i, Headers.VkHeader);
                 entity.Is420mA = GetParamValue(ws, signalColumns, i, Headers.SignalTypeTextHeader).Contains("4-20");
+                entity.UpdateTreshold = GetParamValue(ws, signalColumns, i, Headers.UpdateThersholdHeader);
+                entity.Script = GetParamValue(ws, signalColumns, i, Headers.ScriptHeader);
+                if (entity.SetpointTypes != null)
+                {
+                    if (entity.SetpointValues == null
+                        || entity.SetpointTypes.Count != entity.SetpointValues.Count)
+                        throw new FormatException($"Сигнал {entity.Description} содержит разное количество типов и значений уставок.");
+                }
                 result.Add(entity);
-            }
+            }            
             return result;
         }
 

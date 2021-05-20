@@ -19,7 +19,8 @@
         public static string UpsHeader { get; set; } = "УПС";
         public static string SignalTypeTextHeader { get; set; } = "Тип сигнала";
         public static string VkHeader { get; set; } = "ВК";
-
+        public static string UpdateThersholdHeader { get; set; } = "update_threshold";
+        public static string ScriptHeader { get; set; } = "script";
         #endregion
 
         #region IP Headers

@@ -264,6 +264,28 @@ namespace Nti.XlsxReader.Entities
             }
         }
 
+        private string _updateThershold;
+        public string UpdateTreshold
+        {
+            get => _updateThershold;
+            set
+            {
+                _updateThershold = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _script;
+        public string Script
+        {
+            get => _script;
+            set
+            {
+                _script = value;
+                OnPropertyChanged();
+            }
+        }
+
         #region PropertyChanged Impllementation
 
         public event PropertyChangedEventHandler PropertyChanged;
