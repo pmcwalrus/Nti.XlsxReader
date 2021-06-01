@@ -180,7 +180,15 @@ namespace Nti.XlsxReader
                 var description = GetParamValue(ws, signalColumns, i, Headers.DescriptionHeader);
                 if (string.IsNullOrWhiteSpace(description))
                     continue;
-                var ignoreCellColor = ws.Cell(i, ws.FirstColumnUsed().ColumnNumber()).Style.Fill.BackgroundColor.Color.ToArgb();
+                int ignoreCellColor = 0;
+                try
+                {
+                    ignoreCellColor  = ws.Cell(i, ws.FirstColumnUsed().ColumnNumber()).Style.Fill.BackgroundColor.Color.ToArgb();
+                }
+                catch
+                {
+                    ignoreCellColor = 0;
+                }
                 if (ignoreCellColor == Color.FromArgb(255, 193, 152, 224).ToArgb())
                 {
                     continue;
@@ -460,9 +468,20 @@ namespace Nti.XlsxReader
 
         private static string GetParamValue(IXLWorksheet ws, List<ValueColumn> paramColumns, int row, string paramHeader)
         {
-            return ws.Cell(row, paramColumns
-                .First(x => x.Header == paramHeader)
-                .Column.ColumnNumber()).GetString();
+            var value = string.Empty;
+            try
+            {
+                value = ws.Cell(row, paramColumns
+                    .First(x => x.Header == paramHeader)
+                    .Column.ColumnNumber()).GetString();
+            }
+            catch (FormatException e)
+            {
+                value = ws.Cell(row, paramColumns
+                    .First(x => x.Header == paramHeader)
+                    .Column.ColumnNumber()).CachedValue?.ToString(); ;
+            }
+            return value;
         }
 
         #region PropertyChanged Impllementation
