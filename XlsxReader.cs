@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -129,10 +130,10 @@ namespace Nti.XlsxReader
             }
         }
 
-        public void OpenFile(string fileName)
+        public void OpenFile(string fileName, IProgress<int> progress = null)
         {
             FileName = fileName;
-            DataBase = ExtractFileData(fileName);            
+            DataBase = ExtractFileData(fileName, progress);            
         }
 
         private string _fileName;
@@ -146,12 +147,12 @@ namespace Nti.XlsxReader
             }
         }
 
-        private NtiBase ExtractFileData(string fileName)
+        private NtiBase ExtractFileData(string fileName, IProgress<int> progress = null)
         {
             BaseParsed = false;
             var result = new NtiBase();
             var wb = new XLWorkbook(fileName);
-            result.Signals = new ObservableCollection<SignalEntity>(ParseSignals(wb));
+            result.Signals = new ObservableCollection<SignalEntity>(ParseSignals(wb, progress));
             result.Ip = new ObservableCollection<IpEntity>(ParseIp(wb));
             result.Ups = new ObservableCollection<UpsEntity>(ParseUps(wb));
             result.Layout = new ObservableCollection<SignalOnDevice>(ParseLayout(wb));
@@ -166,7 +167,7 @@ namespace Nti.XlsxReader
 
         #region Main Signals Base Parse
 
-        private List<SignalEntity> ParseSignals(XLWorkbook wb)
+        private List<SignalEntity> ParseSignals(XLWorkbook wb, IProgress<int> progress = null)
         {
             var result = new List<SignalEntity>();
             var ws = wb.Worksheet(SignalListName);
@@ -217,6 +218,7 @@ namespace Nti.XlsxReader
                         throw new FormatException($"Сигнал {entity.Description} содержит разное количество типов и значений уставок.");
                 }
                 result.Add(entity);
+                progress?.Report((int)(((double)i / lastRow.RowNumber()) * 100));
             }            
             return result;
         }
@@ -469,18 +471,18 @@ namespace Nti.XlsxReader
         private static string GetParamValue(IXLWorksheet ws, List<ValueColumn> paramColumns, int row, string paramHeader)
         {
             var value = string.Empty;
-            try
-            {
-                value = ws.Cell(row, paramColumns
-                    .First(x => x.Header == paramHeader)
-                    .Column.ColumnNumber()).GetString();
-            }
-            catch (FormatException e)
-            {
+            //try
+            //{
+            //    value = ws.Cell(row, paramColumns
+            //        .First(x => x.Header == paramHeader)
+            //        .Column.ColumnNumber()).GetString();
+            //}
+            //catch (FormatException e)
+            //{
                 value = ws.Cell(row, paramColumns
                     .First(x => x.Header == paramHeader)
                     .Column.ColumnNumber()).CachedValue?.ToString(); ;
-            }
+            //}
             return value;
         }
 
