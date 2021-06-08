@@ -53,6 +53,18 @@
 
         #endregion
 
+        #region Shmem Headers
+
+        public static string ShmemNameHeader { get; set; } = "shmem name";
+        public static string ShmemTypeHeader { get; set; } = "type";
+        public static string ShmemStaleTimeoutHeader { get; set; } = "stale_timeout";
+        public static string ShmemKeepaliveHeader { get; set; } = "keepalive";
+        public static string ShememLoggingHeader { get; set; } = "logging";
+        public static string ShmemKeepTimeHeader { get; set; } = "keep_time";
+        public static string ShmemKeepMbHeader { get; set; } = "keep_mb";
+
+        #endregion
+
         public static string DeviceAdditionSheetPreamble { get; set; } = "dev_";
 
         #region Layout Header

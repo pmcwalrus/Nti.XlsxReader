@@ -43,6 +43,16 @@ namespace Nti.XlsxReader.Types
             new ValueColumn(Headers.IpRegistartorTimeoutHeader),
         };
 
+        public static List<ValueColumn> GetShmemColumns() => new List<ValueColumn>
+        {
+            new ValueColumn(Headers.ShmemNameHeader),
+            new ValueColumn(Headers.ShmemTypeHeader),
+            new ValueColumn(Headers.ShmemStaleTimeoutHeader),
+            new ValueColumn(Headers.ShmemKeepaliveHeader),
+            new ValueColumn(Headers.ShememLoggingHeader),
+            new ValueColumn(Headers.ShmemKeepTimeHeader),
+            new ValueColumn(Headers.ShmemKeepMbHeader),
+        };
         public static List<ValueColumn> GetUpsColumns() => new List<ValueColumn>
         {
             new ValueColumn(Headers.UpsIdHeader),

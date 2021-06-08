@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -24,6 +23,17 @@ namespace Nti.XlsxReader
             set
             {
                 _signalListName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _shmemsListName = "shmems";
+        public string ShmemListName
+        {
+            get => _shmemsListName;
+            set
+            {
+                _shmemsListName = value;
                 OnPropertyChanged();
             }
         }
@@ -157,6 +167,7 @@ namespace Nti.XlsxReader
             result.Ups = new ObservableCollection<UpsEntity>(ParseUps(wb));
             result.Layout = new ObservableCollection<SignalOnDevice>(ParseLayout(wb));
             result.Vk = new ObservableCollection<VkEntity>(ParseVk(wb));
+            result.Shmems = new ObservableCollection<ShmemEntity>(ParseShmems(wb));
             result.XmlTop = GetXmlDirectParts(wb, XmlTopListName);
             result.XmlBot = GetXmlDirectParts(wb, XmlBotListName);
             result.AddShmems = GetXmlDirectParts(wb, AddShmemsListName);
@@ -379,6 +390,7 @@ namespace Nti.XlsxReader
         {
             var ws = wb.Worksheet(sheetName);
             var firstRow = ws.FirstRowUsed();
+            if (firstRow == null) return string.Empty;
             var lastRow = ws.LastRowUsed();
             var firstColumn = ws.FirstColumnUsed();
             var lastColumn = ws.LastColumnUsed();
@@ -440,6 +452,34 @@ namespace Nti.XlsxReader
 
         #endregion
 
+        #region Parse Shmems
+
+        private List<ShmemEntity> ParseShmems(XLWorkbook wb)
+        {
+            var result = new List<ShmemEntity>();
+            var ws = wb.Worksheet(ShmemListName);
+            var headerRow = ws.FirstRowUsed();
+            var lastRow = ws.LastRowUsed();
+            var shmemColumns = ParseHeader(ws, ValueColumns.GetShmemColumns()); // Parse Header
+            for (var i = headerRow.RowBelow().RowNumber(); i <= lastRow.RowNumber(); ++i)
+            {
+                var name = GetParamValue(ws, shmemColumns, i, Headers.ShmemNameHeader);
+                if (string.IsNullOrWhiteSpace(name)) continue;
+                var entity = new ShmemEntity
+                {
+                    Name = name,
+                    KeepAlive = GetParamValue(ws, shmemColumns, i, Headers.ShmemKeepaliveHeader),
+                    KeepMb = GetParamValue(ws, shmemColumns, i, Headers.ShmemKeepMbHeader),
+                    KeepTime = GetParamValue(ws, shmemColumns, i, Headers.ShmemKeepTimeHeader),
+                    Logging = GetParamValue(ws, shmemColumns, i, Headers.ShememLoggingHeader),
+                    StaleTimeout = GetParamValue(ws, shmemColumns, i, Headers.ShmemStaleTimeoutHeader),
+                    Type = GetParamValue(ws, shmemColumns, i, Headers.ShmemTypeHeader)
+                };
+                result.Add(entity);
+            }
+            return result;
+        }
+        #endregion
 
         private List<ValueColumn> ParseHeader(IXLWorksheet ws, List<ValueColumn> valueColumns)
         {
