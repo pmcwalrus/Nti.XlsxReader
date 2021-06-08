@@ -222,6 +222,7 @@ namespace Nti.XlsxReader
                 entity.Is420mA = GetParamValue(ws, signalColumns, i, Headers.SignalTypeTextHeader).Contains("4-20");
                 entity.UpdateTreshold = GetParamValue(ws, signalColumns, i, Headers.UpdateThersholdHeader);
                 entity.Script = GetParamValue(ws, signalColumns, i, Headers.ScriptHeader);
+                entity.Name = GetParamValue(ws, signalColumns, i, Headers.SignalName);
                 if (entity.SetpointTypes != null)
                 {
                     if (entity.SetpointValues == null

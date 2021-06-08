@@ -13,6 +13,7 @@
         public static string InversionHeader { get; set; } = "Инверсия";
         public static string SystemIdHeader { get; set; } = "Parm system ID";
         public static string SignalIdHeader { get; set; } = "Parm ID";
+        public static string SignalName { get; set; } = "Signal ID";
         public static string SignalTypeHeader { get; set; } = "Type";
         public static string PstsHeader { get; set; } = "ПСТС";
         public static string ShmemHeader { get; set; } = "shmem";

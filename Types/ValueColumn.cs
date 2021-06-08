@@ -26,6 +26,7 @@ namespace Nti.XlsxReader.Types
                 new ValueColumn(Headers.VkHeader),
                 new ValueColumn(Headers.UpdateThersholdHeader),
                 new ValueColumn(Headers.ScriptHeader),
+                new ValueColumn(Headers.SignalName),
             };
 
         public static List<ValueColumn> GetIpColumns() => new List<ValueColumn>
